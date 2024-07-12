@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Blog {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  title       String
+  category    String
+  view_count  Int       @default(1)
+  updatedAt   DateTime  @default(now())    
+}
+
+model Subscriber {
+  id              Int @id @default(autoincrement())
+  email           String
+  is_subscribed   Boolean @default(true)
+}
