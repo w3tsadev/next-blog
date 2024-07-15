@@ -69,6 +69,28 @@ export default function Page({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.metadata.title,
+            datePublished: post.metadata.publishedAt,
+            dateModified: post.metadata.publishedAt,
+            description: post.metadata.summary,
+            image: post.metadata.image
+              ? `${baseUrl}${post.metadata.image}`
+              : `/og?title=${encodeURIComponent(post.metadata.title)}`,
+            url: `${baseUrl}/blog/${post.metadata.category}/${post.slug}`,
+            author: {
+              "@type": "Person",
+              name: "Coding Jitsu Blog",
+            },
+          }),
+        }}
+      />
       <ReportViews
         category={post.metadata.category}
         title={post.metadata.title}
