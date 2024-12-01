@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { promises as dns } from "dns";
 import matter from "gray-matter";
 // get all the mdx files from the dir
 function getMDXFiles(dir: string) {
@@ -73,4 +74,31 @@ export function formatDate(date: string, includeRelative = false) {
   }
 
   return `${fullDate} (${formattedDate})`;
+}
+
+export async function validateEmailAddress(emailAddress: string) {
+  const invalidDomains = [
+    "tempmail.com",
+    "example.com",
+    "email.com",
+    "eamil.com",
+    "test.com",
+  ];
+  const [user, domain] = emailAddress.split("@");
+
+  // Example custom logic: Ensure domain exists and isn't blacklisted
+  if (invalidDomains.includes(domain)) {
+    return false; // Invalid if domain is blacklisted
+  }
+
+  try {
+    const mxRecords = await dns.resolveMx(domain);
+
+    if (!mxRecords || mxRecords.length === 0) {
+      return false;
+    }
+    return true;
+  } catch (error: any) {
+    console.error(error.code);
+  }
 }

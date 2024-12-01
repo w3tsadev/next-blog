@@ -4,9 +4,9 @@ import { POSTS } from "@/lib/constants";
 import { Icons } from "./icons";
 import Link from "next/link";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import { createSubscriber } from "@/lib/actions";
 import { useFormState } from "react-dom";
+import SubmitButton from "./SubmitButton";
 
 export default function Footer() {
   const initialState = { message: "", errors: {} };
@@ -111,7 +111,7 @@ export default function Footer() {
                   defaultValue=""
                   aria-describedby="email-error"
                 />
-                <Button>Subscribe</Button>
+                <SubmitButton />
               </div>
               <div
                 id="email-error"
@@ -119,12 +119,14 @@ export default function Footer() {
                 aria-atomic="true"
                 className="px-1"
               >
-                {state?.errors?.email &&
-                  state.errors.email.map((error: string) => (
-                    <p key={error} className="text-xs text-red-500">
-                      {error}
-                    </p>
-                  ))}
+                {state?.errors?.email && (
+                  <p
+                    key={state.errors.email[0]}
+                    className="text-xs text-red-500"
+                  >
+                    {state.errors.email[0]}
+                  </p>
+                )}
                 {!state?.errors?.email && (
                   <p className="text-xs text-green-500">{state?.message}</p>
                 )}
